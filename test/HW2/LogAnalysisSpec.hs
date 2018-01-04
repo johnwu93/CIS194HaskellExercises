@@ -78,10 +78,6 @@ spec =
       it "should never have a tree change state when an Unknown type is inserted" $
         insert (Unknown "Hello") Leaf `shouldBe` Leaf
 
-      it "should create a new tree when a leaf is inserted" $ do
-         let actualResult = checkTreeOrder $ Leaf <-> createNode 8 <-> createNode 10 <-> createNode 12
-         actualResult `shouldBe` True
-
       it "should have a list of nodes inserted into a BST" $ property $ forAll treeGenerator checkTreeOrder
 
       it "should sort a list of nodes based on timeStamp" $ property $ forAll sortedMessageGenerator checkInOrder

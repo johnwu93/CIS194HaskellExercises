@@ -35,19 +35,17 @@ parseMessages messages = map parseMessage $ lines messages
 insert :: LogMessage -> MessageTree -> MessageTree
 insert (Unknown _) messageTree = messageTree
 insert logMessage Leaf = Node Leaf logMessage Leaf
-insert insertedLogMessage (Node left currLogMessage right) =
-  if getTimeStamp insertedLogMessage <= getTimeStamp currLogMessage
+insert insertedLogMessage@(LogMessage _ insertedTimeStamp _) (Node left currLogMessage@(LogMessage _ currentTimeStamp _) right) =
+  if insertedTimeStamp <= currentTimeStamp
     then Node (insert insertedLogMessage left) currLogMessage right
     else Node left currLogMessage (insert insertedLogMessage right)
 
-(<->) = flip insert
-
 build :: [LogMessage] -> MessageTree
-build = foldl (<->) Leaf
+build = foldr insert Leaf
 
 inOrder :: MessageTree -> [LogMessage]
 inOrder Leaf = []
-inOrder (Node l logMessage r) = inOrder l ++ [logMessage] ++ inOrder r
+inOrder (Node l logMessage r) = inOrder l ++ logMessage : inOrder r
 
 
 whatWentWrong :: [LogMessage] -> [String]

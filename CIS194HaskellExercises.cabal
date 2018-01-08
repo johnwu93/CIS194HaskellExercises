@@ -22,8 +22,13 @@ library
     , HW2.Log
     , HW2.LogAnalysis
     , HW4.Assignment
+    , HW5.Calc
+    , HW5.ExprT
+    , HW5.Parser
+    , HW5.VarExprT
   build-depends:       base >= 4.7 && < 5
                      , vector
+                     , containers
   default-language:    Haskell2010
 
 executable CIS194HaskellExercises

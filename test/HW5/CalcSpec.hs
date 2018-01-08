@@ -1,11 +1,13 @@
 module HW5.CalcSpec (main, spec) where
 {-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE TypeSynonymInstances #-}
 
 import Test.Hspec (hspec, Spec, describe, it, shouldBe)
 import qualified HW5.ExprT as ExprT
 import HW5.Calc
 import HW5.Parser
 import Data.Maybe
+import HW5.StackVM (stackVM, StackVal(IVal))
 
 
 

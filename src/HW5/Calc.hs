@@ -1,13 +1,15 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE TypeSynonymInstances #-}
 
 
-module HW5.Calc(eval, evalStr, Expr, lit, add, mul, withVars, computeMaybe, HasVars, var) where
+module HW5.Calc(eval, evalStr, Expr, lit, add, mul, withVars, computeMaybe, HasVars, var, compile) where
 
 import HW5.ExprT as ExprT
 import HW5.VarExprT as VarExprT
 import HW5.Parser
+import HW5.StackVM as StackVM
 import qualified Data.Map as M
 
 eval :: ExprT -> Integer
@@ -52,9 +54,17 @@ instance Expr Mod7 where
     add  (Mod7 left) (Mod7 right) = Mod7 ((left + right) `mod` 7)
     mul (Mod7 left) (Mod7 right) = Mod7 ((left * right) `mod` 7)
 
+
+instance Expr Program where
+    lit value = [PushI value]
+    add leftProgram rightProgram = leftProgram ++ rightProgram ++ [StackVM.Add]
+    mul leftProgram rightProgram = leftProgram ++ rightProgram ++ [StackVM.Mul]
+
+compile :: String -> Maybe Program
+compile strExp = parseExp lit add mul strExp :: Maybe Program
+
 class HasVars a where
     var :: String -> a
-
 
 instance Expr VarExprT where
     lit = VarExprT.Lit
@@ -63,7 +73,6 @@ instance Expr VarExprT where
 
 instance HasVars VarExprT where
     var = VarExprT.Var
-
 
 instance HasVars (M.Map String Integer -> Maybe Integer) where
     var = M.lookup
@@ -80,3 +89,5 @@ withVars vs exp = exp $ M.fromList vs
 
 computeMaybe :: Maybe Integer
 computeMaybe = withVars [("x", 6)] $ add (lit 3) (var "x")
+
+main = show $ StackVM.stackVM <$> compile "(3 * -4) + 5"

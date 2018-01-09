@@ -28,9 +28,14 @@ library
     , HW5.VarExprT
     , HW5.StackVM
     , HW6.Fibonacci
+    , HW7.JoinList
+    , HW7.Sized
+    , HW7.Scrabble
+    , HW7.Buffer
   build-depends:       base >= 4.7 && < 5
                      , vector
                      , containers
+                     , mtl
   default-language:    Haskell2010
 
 executable CIS194HaskellExercises

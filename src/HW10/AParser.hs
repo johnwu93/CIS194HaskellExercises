@@ -64,11 +64,8 @@ first :: (a -> b) -> (a, c) -> (b, c)
 first f (firstValue, secondValue) = (f firstValue, secondValue)
 
 instance Functor Parser where
-  f `fmap` (Parser parser) =
-    Parser
-      (\s -> do
-         pair <- parser s
-         return $ first f pair)
+  g `fmap` (Parser f) = Parser $ fmap (first g) . f
+
 
 instance Applicative Parser where
   pure x = Parser (\s -> Just (x, s))

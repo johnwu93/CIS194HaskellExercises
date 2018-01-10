@@ -34,6 +34,7 @@ library
     , HW7.Buffer
     , HW8.Party
     , HW8.Employee
+    , HW10.AParser
   build-depends:       base >= 4.7 && < 5
                      , vector
                      , containers

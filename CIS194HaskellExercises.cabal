@@ -35,6 +35,7 @@ library
     , HW8.Party
     , HW8.Employee
     , HW10.AParser
+    , HW11.SExpr
   build-depends:       base >= 4.7 && < 5
                      , vector
                      , containers

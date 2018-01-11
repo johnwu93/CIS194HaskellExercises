@@ -14,4 +14,4 @@ sequenceA = foldr (\x -> (<*>) ((:) <$> x)) (pure [])
 
 
 replicateA :: Applicative f => Int -> f a -> f [a]
-replicateA n x = sequenceA $ replicate n x
+replicateA = (sequenceA .) . replicate
